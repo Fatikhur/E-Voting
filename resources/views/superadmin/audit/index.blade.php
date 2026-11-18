@@ -33,8 +33,8 @@
                     {{ $integrityStatus['message'] }}
                 </p>
                 <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono bg-white/80 p-3 rounded-xl border border-slate-200">
-                    <div>Total Log Terverifikasi: <span class="font-bold">{{ $integrityStatus['total_verified'] }} baris</span></div>
-                    <div>Hash Rantai Terakhir: <span class="font-bold">{{ substr($integrityStatus['latest_hash'], 0, 24) }}...</span></div>
+                    <div>Total Log Terverifikasi: <span class="font-bold">{{ $integrityStatus['total_verified'] ?? 0 }} baris</span></div>
+                    <div>Hash Rantai Terakhir: <span class="font-bold">{{ substr($integrityStatus['latest_hash'] ?? '000000000000000000000000', 0, 24) }}...</span></div>
                 </div>
             </div>
         </div>

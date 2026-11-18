@@ -30,7 +30,7 @@
                     Status Integritas Audit: {{ $integrityStatus['is_valid'] ? 'TERVERIFIKASI UTUH & AMAN' : 'PERINGATAN: RANTAI RUSAK' }}
                 </h3>
                 <p class="text-sm mt-0.5 {{ $integrityStatus['is_valid'] ? 'text-emerald-700' : 'text-red-700' }}">
-                    {{ $integrityStatus['message'] }} (Total: {{ $integrityStatus['total_verified'] }} baris log terverifikasi).
+                    {{ $integrityStatus['message'] }} (Total: {{ $integrityStatus['total_verified'] ?? 0 }} baris log terverifikasi).
                 </p>
             </div>
         </div>

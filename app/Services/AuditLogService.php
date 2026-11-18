@@ -40,6 +40,7 @@ class AuditLogService
             $userId = $currentUser ? $currentUser->id : null;
             $username = $currentUser ? $currentUser->username : 'system';
             $role = $currentUser ? $currentUser->role_name : 'system';
+            $canonicalMetadata = AuditLog::canonicalizeMetadata($metadata);
 
             $currentHash = AuditLog::calculateHash(
                 $prevHash,
@@ -48,7 +49,7 @@ class AuditLogService
                 $action,
                 $eventType,
                 $description,
-                $metadata
+                $canonicalMetadata
             );
 
             return AuditLog::create([
@@ -60,7 +61,7 @@ class AuditLogService
                 'ip_address' => Request::ip() ?? '127.0.0.1',
                 'user_agent' => Request::userAgent() ?? 'CLI/System',
                 'description' => $description,
-                'metadata' => $metadata,
+                'metadata' => $canonicalMetadata,
                 'prev_hash' => $prevHash,
                 'current_hash' => $currentHash,
                 'created_at' => $now,
@@ -92,6 +93,8 @@ class AuditLogService
             if ($log->prev_hash !== $expectedPrevHash) {
                 return [
                     'is_valid' => false,
+                    'total_verified' => $index,
+                    'latest_hash' => $expectedPrevHash,
                     'corrupted_id' => $log->id,
                     'index' => $index + 1,
                     'error_type' => 'PREV_HASH_MISMATCH',
@@ -115,6 +118,8 @@ class AuditLogService
             if ($log->current_hash !== $recalculatedHash) {
                 return [
                     'is_valid' => false,
+                    'total_verified' => $index,
+                    'latest_hash' => $expectedPrevHash,
                     'corrupted_id' => $log->id,
                     'index' => $index + 1,
                     'error_type' => 'DATA_TAMPERED',

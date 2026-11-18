@@ -69,6 +69,71 @@ class AuditTrailIntegrityTest extends TestCase
         $this->assertFalse($result['is_valid']);
         $this->assertEquals($log2->id, $result['corrupted_id']);
         $this->assertEquals('DATA_TAMPERED', $result['error_type']);
+        $this->assertArrayHasKey('total_verified', $result);
+        $this->assertArrayHasKey('latest_hash', $result);
+        $this->assertEquals(1, $result['total_verified']);
+    }
+
+    public function test_audit_log_canonicalizes_metadata_with_arbitrary_key_order(): void
+    {
+        $service = app(AuditLogService::class);
+
+        $user = User::create([
+            'name' => 'Aktor Uji 3',
+            'username' => 'aktor_uji3',
+            'password' => Hash::make('Password123!'),
+            'role_name' => 'admin',
+            'status' => 'active',
+        ]);
+
+        // Key order deliberately randomized/non-alphabetical
+        $service->log('action_multi', 'voter', 'Log multi keys', [
+            'total_dpt' => 10,
+            'election_id' => 1,
+            'newly_synced_count' => 10,
+        ], $user);
+
+        $result = $service->verifyChainIntegrity();
+        $this->assertTrue($result['is_valid']);
+        $this->assertEquals(1, $result['total_verified']);
+    }
+
+    public function test_superadmin_dashboard_renders_successfully(): void
+    {
+        $superadmin = User::create([
+            'name' => 'Super Administrator',
+            'username' => 'superadmin_view',
+            'password' => Hash::make('Password123!'),
+            'role_name' => 'superadmin',
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($superadmin)->get(route('superadmin.dashboard'));
+        $response->assertStatus(200);
+        $response->assertSee('Dashboard Super Administrator');
+        $response->assertSee('Status Integritas Audit Trail');
+    }
+
+    public function test_superadmin_dashboard_renders_gracefully_even_when_chain_is_anomalous(): void
+    {
+        $service = app(AuditLogService::class);
+
+        $superadmin = User::create([
+            'name' => 'Super Administrator 2',
+            'username' => 'superadmin_view2',
+            'password' => Hash::make('Password123!'),
+            'role_name' => 'superadmin',
+            'status' => 'active',
+        ]);
+
+        $log = $service->log('step_init', 'auth', 'Log inisial', null, $superadmin);
+
+        // Manipulate DB directly to simulate corruption
+        DB::table('audit_logs')->where('id', $log->id)->update(['current_hash' => 'invalid_hash_value']);
+
+        $response = $this->actingAs($superadmin)->get(route('superadmin.dashboard'));
+        $response->assertStatus(200);
+        $response->assertSee('PERINGATAN: ANOMALI TERDETEKSI');
     }
 
     public function test_checkpoint_can_be_signed_and_created(): void

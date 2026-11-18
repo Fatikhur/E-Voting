@@ -33,12 +33,12 @@
                     Status Integritas Audit Trail: {{ $chainIntegrity['is_valid'] ? 'AMAN & VALID' : 'PERINGATAN: ANOMALI TERDETEKSI' }}
                 </h2>
                 <p class="text-xs sm:text-sm {{ $chainIntegrity['is_valid'] ? 'text-emerald-700' : 'text-red-700' }} mt-0.5">
-                    {{ $chainIntegrity['message'] }} (Total {{ $chainIntegrity['total_verified'] }} log terverifikasi berantai SHA-256).
+                    {{ $chainIntegrity['message'] }} (Total {{ $chainIntegrity['total_verified'] ?? 0 }} log terverifikasi berantai SHA-256).
                 </p>
             </div>
         </div>
         <div class="text-xs font-mono bg-white/70 px-3 py-1.5 rounded-lg border border-slate-200">
-            Hash Terakhir: {{ substr($chainIntegrity['latest_hash'], 0, 16) }}...
+            Hash Terakhir: {{ substr($chainIntegrity['latest_hash'] ?? '0000000000000000', 0, 16) }}...
         </div>
     </div>
 

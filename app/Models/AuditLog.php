@@ -38,6 +38,31 @@ class AuditLog extends Model
     }
 
     /**
+     * Mengurutkan key array secara kanonikal (rekursif) agar serialisasi JSON deterministik
+     * terlepas dari urutan key atau penyimpanan internal basis data.
+     */
+    public static function canonicalizeMetadata(mixed $data): mixed
+    {
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        $isAssoc = !array_is_list($data);
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = self::canonicalizeMetadata($value);
+            }
+        }
+
+        if ($isAssoc) {
+            ksort($data);
+        }
+
+        return $data;
+    }
+
+    /**
      * Menghitung hash integritas log dengan hash chaining
      */
     public static function calculateHash(
@@ -49,6 +74,8 @@ class AuditLog extends Model
         string $description,
         ?array $metadata
     ): string {
+        $canonicalMetadata = self::canonicalizeMetadata($metadata ?? []);
+
         $data = implode('|', [
             $prevHash,
             $timestamp,
@@ -56,7 +83,7 @@ class AuditLog extends Model
             $action,
             $eventType,
             $description,
-            json_encode($metadata ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            json_encode($canonicalMetadata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
         ]);
 
         return hash('sha256', $data);
