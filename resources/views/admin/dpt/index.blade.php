@@ -19,7 +19,15 @@
             @if(in_array($election->status, ['draft', 'scheduled', 'open']))
                 <form action="{{ route('admin.dpt.sync', $election) }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" onclick="return confirm('Sinkronkan DPT sekarang dari basis data warga wilayah ini?')" class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition">
+                    <button type="button"
+                            data-confirm
+                            data-confirm-type="info"
+                            data-confirm-title="Sinkronisasi Daftar Pemilih Tetap"
+                            data-confirm-message="Sinkronkan DPT untuk pemilihan '{{ $election->title }}' sekarang?"
+                            data-confirm-detail="Sistem akan memvalidasi warga yang memenuhi syarat umur minimal 17 tahun dan domisili, lalu mendaftarkannya ke DPT."
+                            data-confirm-button="Ya, Sinkronkan DPT"
+                            data-confirm-cancel="Batal"
+                            class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                         <span>🔄 Sinkronkan DPT Terbaru</span>
                     </button>
                 </form>

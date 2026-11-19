@@ -131,7 +131,15 @@
                                     <form action="{{ route('admin.residents.destroy', $res) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Hapus data warga ini?')" class="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-xs font-semibold">
+                                        <button type="button"
+                                                data-confirm
+                                                data-confirm-type="danger"
+                                                data-confirm-title="Hapus Data Warga"
+                                                data-confirm-message="Apakah Anda yakin ingin menghapus data warga {{ $res->name }}?"
+                                                data-confirm-detail="NIK: {{ $res->nik }} (Tindakan ini bersifat permanen dan akan menghapus warga dari basis data kependudukan)."
+                                                data-confirm-button="Ya, Hapus Permanen"
+                                                data-confirm-cancel="Batal"
+                                                class="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 transition">
                                             Hapus
                                         </button>
                                     </form>

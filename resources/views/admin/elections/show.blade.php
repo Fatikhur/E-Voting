@@ -35,14 +35,30 @@
                 </a>
                 <form action="{{ route('admin.elections.open', $election) }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" onclick="return confirm('Buka waktu pemungutan suara sekarang?')" class="px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
+                    <button type="button"
+                            data-confirm
+                            data-confirm-type="success"
+                            data-confirm-title="Buka Pemungutan Suara"
+                            data-confirm-message="Buka waktu pemungutan suara untuk '{{ $election->title }}' sekarang?"
+                            data-confirm-detail="Status pemilihan akan menjadi aktif/buka. Warga yang terdaftar pada DPT dapat segera melakukan voting digital."
+                            data-confirm-button="Ya, Buka Voting Sekarang"
+                            data-confirm-cancel="Batal"
+                            class="px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 transition">
                         ▶️ Buka Voting Sekarang
                     </button>
                 </form>
             @elseif($election->isOpen())
                 <form action="{{ route('admin.elections.close', $election) }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" onclick="return confirm('Tutup pemungutan suara sekarang? Setelah ditutup, warga tidak dapat voting lagi.')" class="px-4 py-2 text-xs font-bold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm">
+                    <button type="button"
+                            data-confirm
+                            data-confirm-type="warning"
+                            data-confirm-title="Tutup Pemungutan Suara"
+                            data-confirm-message="Apakah Anda yakin ingin menutup pemungutan suara sekarang?"
+                            data-confirm-detail="Setelah ditutup, warga tidak dapat voting lagi dan pemilihan akan masuk ke tahap verifikasi hasil Two-Person Rule."
+                            data-confirm-button="Ya, Tutup Pemungutan Suara"
+                            data-confirm-cancel="Batal"
+                            class="px-4 py-2 text-xs font-bold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 transition">
                         ⏹️ Tutup Pemungutan Suara
                     </button>
                 </form>
@@ -79,7 +95,15 @@
                 @if(!$election->isPublished() && $approval?->isFullyApproved())
                     <form action="{{ route('admin.elections.publish', $election) }}" method="POST" class="inline">
                         @csrf
-                        <button type="submit" onclick="return confirm('Terbitkan hasil resmi pemilihan ini ke publik?')" class="px-5 py-2.5 text-sm font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition">
+                        <button type="button"
+                                data-confirm
+                                data-confirm-type="success"
+                                data-confirm-title="Publikasikan Hasil Resmi"
+                                data-confirm-message="Terbitkan dan umumkan hasil resmi pemilihan ini ke publik sekarang?"
+                                data-confirm-detail="Hasil telah disahkan oleh Panitia Pemilihan dan Pengawas Independen. Publikasi ini bersifat final."
+                                data-confirm-button="Ya, Publikasikan Sekarang"
+                                data-confirm-cancel="Batal"
+                                class="px-5 py-2.5 text-sm font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
                             📢 Publikasikan Hasil Resmi Sekarang
                         </button>
                     </form>
@@ -236,10 +260,18 @@
                                 Edit Profil
                             </a>
                             @if($candidate->status === 'active')
-                                <form action="{{ route('admin.candidates.withdraw', $candidate) }}" method="POST" class="inline" onsubmit="return confirm('Tandai kandidat ini sebagai mengundurkan diri?')">
+                                <form action="{{ route('admin.candidates.withdraw', $candidate) }}" method="POST" class="inline">
                                     @csrf
                                     <input type="hidden" name="withdrawal_reason" value="Mengundurkan diri secara resmi atas permohonan pribadi">
-                                    <button type="submit" class="text-xs text-red-600 hover:underline">
+                                    <button type="button"
+                                            data-confirm
+                                            data-confirm-type="danger"
+                                            data-confirm-title="Tandai Pengunduran Diri Kandidat"
+                                            data-confirm-message="Tandai kandidat No. {{ $candidate->candidate_number }} ({{ $candidate->name }}) sebagai mengundurkan diri?"
+                                            data-confirm-detail="Kandidat yang telah mengundurkan diri tidak dapat dipilih kembali saat pemungutan suara berlangsung."
+                                            data-confirm-button="Ya, Tandai Mengundurkan Diri"
+                                            data-confirm-cancel="Batal"
+                                            class="text-xs text-red-600 hover:underline font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                         Undurkan Diri
                                     </button>
                                 </form>

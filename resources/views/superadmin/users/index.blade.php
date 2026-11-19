@@ -105,26 +105,62 @@
                                         <form action="{{ route('superadmin.users.toggle-status', $user) }}" method="POST" class="inline">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" onclick="return confirm('Ubah status aktif akun ini?')" class="px-2.5 py-1 text-xs font-medium rounded-lg border {{ $user->status === 'active' ? 'border-red-200 text-red-600 hover:bg-red-50' : 'border-emerald-200 text-emerald-600 hover:bg-emerald-50' }}">
-                                                {{ $user->status === 'active' ? 'Nonaktifkan' : 'Aktifkan' }}
-                                            </button>
+                                            @if($user->status === 'active')
+                                                <button type="button"
+                                                        data-confirm
+                                                        data-confirm-type="warning"
+                                                        data-confirm-title="Nonaktifkan Akun Pengguna"
+                                                        data-confirm-message="Apakah Anda yakin ingin menonaktifkan akun {{ $user->name }} ({{ '@' . $user->username }})?"
+                                                        data-confirm-detail="Pengguna ini tidak akan dapat masuk ke sistem sampai akun diaktifkan kembali oleh Super Administrator."
+                                                        data-confirm-button="Ya, Nonaktifkan Akun"
+                                                        data-confirm-cancel="Batal"
+                                                        class="px-2.5 py-1 text-xs font-semibold rounded-lg border border-red-200 text-red-600 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 transition">
+                                                    Nonaktifkan
+                                                </button>
+                                            @else
+                                                <button type="button"
+                                                        data-confirm
+                                                        data-confirm-type="info"
+                                                        data-confirm-title="Aktifkan Akun Pengguna"
+                                                        data-confirm-message="Aktifkan kembali akun pengguna {{ $user->name }} ({{ '@' . $user->username }})?"
+                                                        data-confirm-detail="Pengguna ini akan segera memiliki hak akses untuk login kembali ke sistem."
+                                                        data-confirm-button="Ya, Aktifkan Akun"
+                                                        data-confirm-cancel="Batal"
+                                                        class="px-2.5 py-1 text-xs font-semibold rounded-lg border border-emerald-200 text-emerald-600 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 transition">
+                                                    Aktifkan
+                                                </button>
+                                            @endif
                                         </form>
 
                                         <!-- Reset Password Modal Trigger -->
-                                        <button @click="openReset = true" class="px-2.5 py-1 text-xs font-medium rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100">
+                                        <button @click="openReset = true" class="px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                                             Reset Sandi
                                         </button>
 
-                                        <!-- Simple Reset Modal -->
-                                        <div x-show="openReset" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-                                            <div @click.away="openReset = false" class="bg-white rounded-2xl max-w-sm w-full p-6 text-left shadow-2xl">
-                                                <h3 class="text-base font-bold text-slate-800">Reset Sandi: @ {{ $user->username }}</h3>
-                                                <form action="{{ route('superadmin.users.reset-password', $user) }}" method="POST" class="mt-4 space-y-3">
+                                        <!-- Styled Reset Password Modal -->
+                                        <div x-cloak x-show="openReset" @keydown.window.escape="openReset = false" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+                                            <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity" @click="openReset = false" aria-hidden="true"></div>
+                                            <div @click.stop class="relative bg-white rounded-2xl max-w-sm w-full p-6 text-left shadow-2xl border border-slate-200 z-10 transform transition-all">
+                                                <div class="flex items-center gap-3 mb-4">
+                                                    <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="text-base font-bold text-slate-900">Reset Kata Sandi</h3>
+                                                        <p class="text-xs text-slate-500">{{ $user->name }} ({{ '@' . $user->username }})</p>
+                                                    </div>
+                                                </div>
+                                                <form action="{{ route('superadmin.users.reset-password', $user) }}" method="POST" class="space-y-4">
                                                     @csrf
-                                                    <input type="password" name="new_password" required minlength="8" placeholder="Sandi baru (min 8 char)" class="w-full px-3 py-2 text-sm border rounded-lg">
-                                                    <div class="flex justify-end gap-2 pt-2">
-                                                        <button type="button" @click="openReset = false" class="px-3 py-1.5 text-xs text-slate-500">Batal</button>
-                                                        <button type="submit" class="px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 rounded-lg">Reset</button>
+                                                    <div>
+                                                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kata Sandi Baru</label>
+                                                        <input type="password" name="new_password" required minlength="8" placeholder="Minimal 8 karakter" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                    </div>
+                                                    <div class="flex justify-end gap-2.5 pt-2 border-t border-slate-100">
+                                                        <button type="button" @click="openReset = false" class="px-3.5 py-2 text-xs font-semibold text-slate-700 rounded-xl border border-slate-300 hover:bg-slate-50 transition">Batal</button>
+                                                        <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition">Simpan Sandi Baru</button>
                                                     </div>
                                                 </form>
                                             </div>
