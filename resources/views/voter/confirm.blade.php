@@ -70,8 +70,15 @@
                     </a>
 
                     <button
-                        type="submit"
-                        class="w-full sm:w-2/3 py-3.5 px-6 text-center text-base font-extrabold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xl shadow-emerald-600/30 hover:shadow-emerald-600/50 transition transform active:scale-[0.98] border-2 border-emerald-400 flex items-center justify-center gap-2"
+                        type="button"
+                        data-confirm
+                        data-confirm-type="success"
+                        data-confirm-title="Konfirmasi Akhir Pemberian Suara"
+                        data-confirm-message="Kirim suara Anda untuk Kandidat No. {{ $candidate->candidate_number }} ({{ $candidate->name }})?"
+                        data-confirm-detail="Pilihan Anda akan dienkripsi secara anonim dan dimasukkan ke dalam kotak suara digital. Surat suara tidak dapat diubah atau ditarik kembali setelah ini."
+                        data-confirm-button="Ya, Masukkan ke Kotak Suara"
+                        data-confirm-cancel="Periksa Kembali"
+                        class="w-full sm:w-2/3 py-3.5 px-6 text-center text-base font-extrabold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xl shadow-emerald-600/30 hover:shadow-emerald-600/50 transition transform active:scale-[0.98] border-2 border-emerald-400 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
                     >
                         <span>✓</span>
                         <span>YA, SAYA YAKIN & KONFIRMASI</span>

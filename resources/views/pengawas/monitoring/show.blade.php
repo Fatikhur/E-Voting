@@ -45,7 +45,15 @@
                         <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Verifikasi Pengawas Independen *</label>
                         <textarea name="notes" rows="2" required placeholder="Contoh: Proses penghitungan telah diawasi langsung. Jumlah surat suara sesuai dengan pemilih terdaftar..." class="w-full px-3 py-2 text-xs border rounded-lg"></textarea>
                     </div>
-                    <button type="submit" onclick="return confirm('Tandatangani persetujuan hasil pemilihan ini? Tindakan ini akan dicatat ke dalam audit log.')" class="px-5 py-2 text-xs font-bold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition">
+                    <button type="button"
+                            data-confirm
+                            data-confirm-type="warning"
+                            data-confirm-title="Tandatangani Persetujuan Berita Acara"
+                            data-confirm-message="Tandatangani dan sahkan hasil pengawasan pemilihan ini (Two-Person Rule)?"
+                            data-confirm-detail="Catatan verifikasi Anda akan disimpan permanen dan dibubuhi stempel integritas audit trail kriptografis SHA-256."
+                            data-confirm-button="Ya, Tanda Tangani & Sahkan"
+                            data-confirm-cancel="Batal"
+                            class="px-5 py-2 text-xs font-bold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
                         ✍️ Tanda Tangani & Sahkan Hasil Pengawasan
                     </button>
                 </form>

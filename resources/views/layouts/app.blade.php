@@ -156,7 +156,15 @@
 
                         <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
-                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin keluar dari sistem?')" class="flex items-center gap-1.5 bg-red-600/90 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                            <button type="button"
+                                    data-confirm
+                                    data-confirm-type="danger"
+                                    data-confirm-title="Keluar dari Sistem"
+                                    data-confirm-message="Apakah Anda yakin ingin mengakhiri sesi dan keluar dari sistem E-Voting?"
+                                    data-confirm-detail="Anda harus memasukkan kembali kredensial akun untuk mengakses panel ini."
+                                    data-confirm-button="Ya, Keluar"
+                                    data-confirm-cancel="Batal"
+                                    class="flex items-center gap-1.5 bg-red-600/90 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                                 </svg>
@@ -246,6 +254,9 @@
 
         </div>
     </div>
+
+    {{-- Global Confirmation Dialog Modal --}}
+    @include('layouts.confirm-modal')
 
     @stack('scripts')
 </body>

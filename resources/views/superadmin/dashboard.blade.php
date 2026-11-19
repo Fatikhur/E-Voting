@@ -15,7 +15,15 @@
             </a>
             <form action="{{ route('superadmin.audit.verify') }}" method="POST" class="inline">
                 @csrf
-                <button type="submit" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition">
+                <button type="button"
+                        data-confirm
+                        data-confirm-type="info"
+                        data-confirm-title="Pindai Integritas Audit Trail"
+                        data-confirm-message="Mulai pemindaian dan verifikasi seluruh rantai hash audit log?"
+                        data-confirm-detail="Sistem akan memeriksa integritas kriptografis SHA-256 baris per baris untuk mendeteksi apabila ada data yang dimanipulasi langsung di database."
+                        data-confirm-button="Mulai Pemindaian"
+                        data-confirm-cancel="Batal"
+                        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                     <span>🛡️ Pindai Integritas Audit</span>
                 </button>
             </form>
