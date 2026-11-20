@@ -60,6 +60,12 @@ class VoterDashboardController extends Controller
             ];
         });
 
-        return view('voter.dashboard', compact('user', 'electionsData'));
+        $voterSummary = [
+            'total_elections' => $electionsData->count(),
+            'voted_count' => $electionsData->where('has_voted', true)->count(),
+            'pending_count' => $electionsData->where('has_voted', false)->where('can_vote', true)->count(),
+        ];
+
+        return view('voter.dashboard', compact('user', 'electionsData', 'voterSummary'));
     }
 }
