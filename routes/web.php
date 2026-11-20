@@ -114,6 +114,7 @@ Route::middleware(['auth', 'active.user'])->group(function () {
     // ==========================================
     Route::middleware('role:superadmin,pengawas')->prefix('pengawas')->name('pengawas.')->group(function () {
         Route::get('/dashboard', [PengawasDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
         Route::get('/monitoring/{election}', [MonitoringController::class, 'show'])->name('monitoring.show');
 
         // Audit Pengawasan & Integritas Hash

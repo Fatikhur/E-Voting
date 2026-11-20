@@ -89,6 +89,18 @@
             @endif
 
             @if(auth()->user()->isPengawas())
+                {{-- Pantau Pemilihan --}}
+                @php $isMonitoringActive = request()->routeIs('pengawas.monitoring.*'); @endphp
+                <a href="{{ route('pengawas.monitoring.index') }}"
+                   class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2ECC71] {{ $isMonitoringActive ? 'bg-[#2ECC71]/15 text-[#2ECC71] font-semibold' : 'text-[#C5C9D4] hover:text-white hover:bg-white/5 font-medium' }}"
+                   @if($isMonitoringActive) aria-current="page" @endif>
+                    <svg class="w-4 h-4 shrink-0 {{ $isMonitoringActive ? 'text-[#2ECC71]' : 'text-[#9AA0B4] group-hover:text-white' }}" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Pantau Pemilihan</span>
+                </a>
+
                 {{-- Jejak Audit --}}
                 @php $isObserverAuditActive = request()->routeIs('pengawas.audit.*'); @endphp
                 <a href="{{ route('pengawas.audit.index') }}"
