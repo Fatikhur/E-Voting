@@ -86,11 +86,14 @@
 </head>
 <body>
 
-    <div class="no-print" style="background: #2563eb; color: white; padding: 12px; text-align: center; margin-bottom: 20px;">
-        <button onclick="window.print()" style="background: white; color: #2563eb; font-weight: bold; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
-            🖨️ Cetak Dokumen Sekarang
+    <div class="no-print" style="background: #1877F2; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 20px; font-family: Inter, Arial, sans-serif;">
+        <button onclick="window.print()" style="background: white; color: #1877F2; font-weight: 600; font-size: 13px; padding: 7px 16px; border: none; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            <span>Cetak Dokumen Sekarang</span>
         </button>
-        <span style="margin-left: 15px; font-size: 10pt;">Gunakan opsi 'Save as PDF' pada dialog print browser jika ingin menyimpan ke PDF.</span>
+        <span style="font-size: 12px; color: #E5E7EB;">Gunakan opsi 'Save as PDF' pada dialog cetak browser jika ingin menyimpan ke berkas PDF.</span>
     </div>
 
     <div class="header">
