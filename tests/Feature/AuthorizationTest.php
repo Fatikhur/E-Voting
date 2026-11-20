@@ -117,4 +117,19 @@ class AuthorizationTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Dashboard Pengawas Independen');
     }
+
+    public function test_pengawas_can_access_monitoring_index(): void
+    {
+        $pengawas = User::create([
+            'name' => 'Pengawas Independen 2',
+            'username' => 'pengawas_test2',
+            'password' => Hash::make('Password123!'),
+            'role_name' => 'pengawas',
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($pengawas)->get('/pengawas/monitoring');
+        $response->assertStatus(200);
+        $response->assertSeeText('Pemantauan Pemilihan Aktif & Terjadwal');
+    }
 }
