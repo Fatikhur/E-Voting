@@ -87,4 +87,34 @@ class AuthorizationTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Dashboard Super Administrator');
     }
+
+    public function test_admin_can_access_admin_dashboard(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Panitia',
+            'username' => 'admin_test',
+            'password' => Hash::make('Password123!'),
+            'role_name' => 'admin',
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin/dashboard');
+        $response->assertStatus(200);
+        $response->assertSee('Dashboard Panitia Pemilihan');
+    }
+
+    public function test_pengawas_can_access_pengawas_dashboard(): void
+    {
+        $pengawas = User::create([
+            'name' => 'Pengawas Independen',
+            'username' => 'pengawas_test',
+            'password' => Hash::make('Password123!'),
+            'role_name' => 'pengawas',
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($pengawas)->get('/pengawas/dashboard');
+        $response->assertStatus(200);
+        $response->assertSee('Dashboard Pengawas Independen');
+    }
 }
