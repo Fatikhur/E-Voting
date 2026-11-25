@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#F1F2F5]">
+<html lang="id" class="h-full bg-[#F1F2F5] dark:bg-[#0B1120]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'E-Voting RT/RW' }} - Sistem Pemilihan Digital RT/RW</title>
+
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem('theme') === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
 
     <!-- Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,7 +27,19 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="h-full flex flex-col font-sans text-[#252A34] bg-[#F1F2F5] antialiased selection:bg-[#1877F2] selection:text-white" x-data="{ sidebarOpen: false }">
+<body class="h-full flex flex-col font-sans text-[#252A34] dark:text-slate-100 bg-[#F1F2F5] dark:bg-[#0B1120] antialiased selection:bg-[#1877F2] selection:text-white transition-colors duration-150"
+      x-data="{
+          sidebarOpen: false,
+          darkMode: document.documentElement.classList.contains('dark'),
+          toggleDarkMode() {
+              this.darkMode = !this.darkMode;
+              document.documentElement.classList.toggle('dark', this.darkMode);
+              try {
+                  localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+              } catch (e) {}
+              window.dispatchEvent(new CustomEvent('theme-changed', { detail: { dark: this.darkMode } }));
+          }
+      }">
 
     <div class="min-h-screen bg-[#F1F2F5] flex">
 
@@ -148,7 +170,21 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('password.edit') }}" title="Ganti Kata Sandi" class="p-2 text-[#6B7280] hover:text-[#252A34] hover:bg-slate-100 rounded-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1877F2]">
+                        <!-- Dark Mode Toggle Button (All Roles) -->
+                        <button type="button"
+                                @click="toggleDarkMode()"
+                                :title="darkMode ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'"
+                                :aria-label="darkMode ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'"
+                                class="p-2 text-[#6B7280] dark:text-slate-400 hover:text-[#252A34] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1877F2]">
+                            <svg x-cloak x-show="!darkMode" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                            </svg>
+                            <svg x-cloak x-show="darkMode" class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </button>
+
+                        <a href="{{ route('password.edit') }}" title="Ganti Kata Sandi" class="p-2 text-[#6B7280] dark:text-slate-400 hover:text-[#252A34] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1877F2]">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
                             </svg>
