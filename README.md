@@ -32,7 +32,7 @@
 
 ## Deskripsi Proyek
 
-**E-Voting RT/RW** adalah aplikasi web modern kelas enterprise yang dirancang khusus untuk memodernisasi dan mendigitalisasi proses demokrasi di tingkat rukun tetangga (RT) dan rukun warga (RW). Menggantikan proses manual berbasis kertas yang rawan manipulasi, penghitungan lambat, dan biaya logistik tinggi, aplikasi ini memberikan jaminan matematis terhadap kerahasiaan pilihan warga sekaligus integritas hasil suara.
+**E-Voting RT/RW** adalah aplikasi web modern kelas enterprise yang dirancang khusus untuk memodernisasi dan mendigitalisasi proses pemilihan di tingkat rukun tetangga (RT) dan rukun warga (RW). Menggantikan proses manual berbasis kertas yang rawan manipulasi, penghitungan lambat, dan biaya logistik tinggi, aplikasi ini memberikan jaminan matematis terhadap kerahasiaan pilihan warga sekaligus integritas hasil suara.
 
 Aplikasi ini dibangun bukan sekadar sebagai prototipe visual, melainkan sistem fungsional penuh dengan proteksi *race condition*, audit trail berbasis *hash chaining* (kriptografis SHA-256), *two-person rule* untuk pengesahan hasil suara, pembatasan rate limit ketat, dan antarmuka yang sangat aksesibel bagi kalangan lanjut usia (*elderly-friendly UX*).
 
